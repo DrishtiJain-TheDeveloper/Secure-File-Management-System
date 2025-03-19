@@ -1,6 +1,7 @@
+package src;
 import java.util.Scanner;
 import modules.AuthenticationAccessControlModule;
-import modules.FileOperationsModule;
+import modules.FileModule;
 import modules.RoleBasedAccessControlModule;
 
 public class Main {
@@ -24,13 +25,14 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    AuthenticationAccessControlModule.main(null);
+                    AuthenticationAccessControlModule.run(scanner);
                     break;
                 case 2:
-                    FileOperationsModule.main(null);
+                    FileModule fileModule = new FileModule();
+                    fileModule.run(scanner);
                     break;
                 case 3:
-                    RoleBasedAccessControlModule.main(null);
+                    RoleBasedAccessControlModule.run(scanner);
                     break;
                 case 4:
                     System.out.println("Exiting Secure File Management System. Goodbye!");

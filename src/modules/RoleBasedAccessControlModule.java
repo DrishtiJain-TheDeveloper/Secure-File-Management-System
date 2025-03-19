@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class RoleBasedAccessControlModule {
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    public static void run(Scanner scanner) {
+       
 
         System.out.println(" Role-Based Access Control (RBAC) Module");
 

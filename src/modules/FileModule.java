@@ -1,3 +1,4 @@
+package modules;
 import java.io.*;
 import java.nio.file.*;
 import java.text.SimpleDateFormat;
@@ -7,7 +8,7 @@ import java.util.Scanner;
 public class FileModule {
 
     // Main Menu to Perform File Operations
-    public static void fileOperations(Scanner scanner) {
+    public static void run(Scanner scanner) {
         while (true) {
             System.out.println("\nFile Operations Menu:");
             System.out.println("1. Create a File");

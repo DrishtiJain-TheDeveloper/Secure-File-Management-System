@@ -1,3 +1,4 @@
+package modules;
 import java.util.Scanner;
 
 public class AuthenticationAccessControlModule {
@@ -7,8 +8,7 @@ public class AuthenticationAccessControlModule {
     static String[] roles = new String[100];       // Dynamic array for roles
     static int userCount = 0;                      // Tracks the number of users
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    public static void run(Scanner scanner) {
 
         while (true) {
             System.out.println("Secure File Management System");
