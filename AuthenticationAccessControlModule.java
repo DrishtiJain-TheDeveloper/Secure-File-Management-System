@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class SecureFileManagementSystem {
+public class AuthenticationAccessControlModule {
 
     static String[] usernames = new String[100];   // Dynamic array for usernames
     static String[] passwords = new String[100];   // Dynamic array for passwords
