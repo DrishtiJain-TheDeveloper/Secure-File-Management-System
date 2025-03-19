@@ -1,6 +1,9 @@
 # Secure-File-Management-System
 A Secure File Management System (SFMS) in Java that offers authentication, encryption, access control, and threat detection.   Includes file operations (create, read, write, share), encryption/decryption, and security threat detection (buffer overflow &amp; malware patterns). 
+
+
 Develop a secure file management system that incorporates authentication mechanisms (password-based, two-factor):
+
 The Authentication & Access Control Module is responsible for verifying the user's identity and managing their access rights. It ensures that only authorized users can interact with the Secure File Management System (SFMS), adding an extra layer of security.
 1. Username-Password Authentication:
    Users log in by providing their username and password.
