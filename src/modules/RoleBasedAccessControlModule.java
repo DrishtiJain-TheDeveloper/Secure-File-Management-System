@@ -1,11 +1,12 @@
 package modules;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class RoleBasedAccessControlModule {
 
     public static void run(Scanner scanner) {
-       
 
         System.out.println(" Role-Based Access Control (RBAC) Module");
 
@@ -22,12 +23,11 @@ public class RoleBasedAccessControlModule {
         } else {
             System.out.println("Invalid role. Access denied.");
         }
-
-        scanner.close();
     }
 
     // Admin menu with full privileges
     private static void adminMenu(Scanner scanner) {
+
         boolean exit = false;
 
         while (!exit) {
@@ -46,23 +46,23 @@ public class RoleBasedAccessControlModule {
             switch (choice) {
                 case 1:
                     System.out.println("Admin: Creating File...");
-                    // Call FileOperationsModule.createFile() (stub for now)
+                    createFile(scanner);
                     break;
                 case 2:
                     System.out.println("Admin: Reading File...");
-                    // Call FileOperationsModule.readFile() (stub for now)
+                    readFile(scanner);
                     break;
                 case 3:
                     System.out.println(" Admin: Writing to File...");
-                    // Call FileOperationsModule.writeFile() (stub for now)
+                    writeFile(scanner);
                     break;
                 case 4:
                     System.out.println("Admin: Deleting File...");
-                    // Stub for future functionality
+                    deleteFile(scanner);
                     break;
                 case 5:
                     System.out.println("Admin: Sharing File...");
-                    // Stub for future functionality
+                    shareFile(scanner);
                     break;
                 case 6:
                     System.out.println("Exiting Admin Menu...");
@@ -91,11 +91,11 @@ public class RoleBasedAccessControlModule {
             switch (choice) {
                 case 1:
                     System.out.println("User: Reading File...");
-                    // Call FileOperationsModule.readFile() (stub for now)
+                    readFile(scanner);
                     break;
                 case 2:
                     System.out.println("User: Writing to File...");
-                    // Call FileOperationsModule.writeFile() (stub for now)
+                    writeFile(scanner);
                     break;
                 case 3:
                     System.out.println("Exiting User Menu...");
@@ -105,5 +105,74 @@ public class RoleBasedAccessControlModule {
                     System.out.println("Invalid choice. Try again.");
             }
         }
+    }
+
+    // Method to create a file
+    private static void createFile(Scanner scanner) {
+        System.out.print("Enter file name to create: ");
+        String fileName = scanner.nextLine();
+        File file = new File(fileName);
+
+        try {
+            if (file.createNewFile()) {
+                System.out.println("File created: " + fileName);
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while creating the file.");
+            e.printStackTrace();
+        }
+    }
+
+    // Method to read a file
+    private static void readFile(Scanner scanner) {
+        System.out.print("Enter file name to read: ");
+        String fileName = scanner.nextLine();
+        File file = new File(fileName);
+
+        if (file.exists()) {
+            System.out.println("Reading file: " + fileName);
+            // Add code here to read the file content (stub for now)
+        } else {
+            System.out.println("File not found.");
+        }
+    }
+
+    // Method to write to a file
+    private static void writeFile(Scanner scanner) {
+        System.out.print("Enter file name to write to: ");
+        String fileName = scanner.nextLine();
+        File file = new File(fileName);
+
+        if (file.exists()) {
+            System.out.println("Writing to file: " + fileName);
+            // Add code here to write to the file (stub for now)
+        } else {
+            System.out.println("File not found.");
+        }
+    }
+
+    // Method to delete a file
+    private static void deleteFile(Scanner scanner) {
+        System.out.print("Enter the file name to delete: ");
+        String fileName = scanner.nextLine();
+        File file = new File(fileName);
+
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println("File '" + fileName + "' deleted successfully.");
+            } else {
+                System.out.println("Failed to delete the file.");
+            }
+        } else {
+            System.out.println("File not found.");
+        }
+    }
+
+    // Method to share a file (stub for future implementation)
+    private static void shareFile(Scanner scanner) {
+        System.out.println("File sharing functionality is under development.");
+        // Add sharing functionality here in the future.
     }
 }
