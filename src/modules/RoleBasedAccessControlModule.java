@@ -29,7 +29,7 @@ public class RoleBasedAccessControlModule {
         boolean exit = false;
 
         while (!exit) {
-            System.out.println("\n🔧 Admin Menu:");
+            System.out.println("Admin Menu:");
             System.out.println("1. Create File");
             System.out.println("2. Read File");
             System.out.println("3. Write to File");
@@ -74,7 +74,7 @@ public class RoleBasedAccessControlModule {
         boolean exit = false;
 
         while (!exit) {
-            System.out.println("\n👤 User Menu:");
+            System.out.println("User Menu:");
             System.out.println("1. Read File");
             System.out.println("2. Write to File");
             System.out.println("3. List My Files");
