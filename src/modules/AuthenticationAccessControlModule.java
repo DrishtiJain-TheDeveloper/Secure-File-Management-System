@@ -31,7 +31,7 @@ public class AuthenticationAccessControlModule {
         boolean exit = false;
 
         while (!exit) {
-            System.out.println("\nAuthentication & Access Control Menu:");
+            System.out.println("\Authentication & Access Control Menu:");
             System.out.println("1. Register New User");
             System.out.println("2. Login");
             System.out.println("3. List All Users (Admin only)");
