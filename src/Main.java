@@ -1,4 +1,4 @@
-package src;
+
 import java.util.Scanner;
 import modules.AuthenticationAccessControlModule;
 import modules.FileModule;
