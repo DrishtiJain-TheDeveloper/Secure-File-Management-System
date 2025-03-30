@@ -1,9 +1,8 @@
-# 🔒 Secure File Management System
+# 🔒 Secure File Management System (Java CLI)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Java 17+](https://img.shields.io/badge/Java-17+-blue.svg)](https://www.oracle.com/java/)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20|%20macOS%20|%20Linux-lightgrey)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1.5-brightgreen.svg)](https://spring.io/projects/spring-boot)
 
 ## 📖 Table of Contents
 - [Project Description](#-project-description)
@@ -11,181 +10,158 @@
 - [System Architecture](#-system-architecture)
 - [Installation](#-installation)
 - [Usage](#-usage)
-- [API Documentation](#-api-documentation)
-- [Technologies Used](#-technologies-used)
-- [Screenshots](#-screenshots)
+- [Modules](#-modules)
+- [Code Structure](#-code-structure)
 - [Contributing](#-contributing)
 - [License](#-license)
 
 ## 📖 Project Description
-The **Secure File Management System** is a Java-based application that provides:
-- Secure file storage with AES-256 encryption
-- Role-based access control (RBAC)
-- File versioning and audit logging
-- RESTful API for integration
-- Built with Spring Boot and React
+A command-line file management system with robust security features:
+- Role-based access control (Admin/User)
+- File encryption using Caesar Cipher
+- Malware detection and prevention
+- Secure file sharing between users
+- Comprehensive user and file management
 
 ## 🌟 Key Features
 
 ### 🔐 Security Features
 | Feature | Implementation |
 |---------|---------------|
-| AES-256 Encryption | Java Cryptography Architecture (JCA) |
-| JWT Authentication | Spring Security |
-| Password Hashing | Argon2 algorithm |
-| Audit Logging | Spring AOP |
+| Authentication | Password + OTP verification |
+| Authorization | RBAC with admin/user roles |
+| File Encryption | Custom Caesar Cipher (1-25 shift) |
+| Malware Scan | 10+ signature patterns |
+| Input Validation | File size/extensions/content checks |
 
-### 📂 Core Functionality
-- File upload/download with encryption
-- File sharing with expiration
-- Version history tracking
-- Metadata search
+### 📂 File Operations
+```mermaid
+graph LR
+    A[Create] --> B[Encrypt]
+    B --> C[Store]
+    C --> D[Share]
+    D --> E[Decrypt]
+🏗️ System Architecture
+Core Components:
 
-## 🏗️ System Architecture
-
-### Backend Structure
-mermaid
-graph TD
-    A[Client] --> B[Spring Security]
-    B --> C[Controllers]
-    C --> D[Services]
-    D --> E[Repositories]
-    E --> F[MySQL Database]
-Database Schema
 mermaid
 Copy
-erDiagram
-    USER ||--o{ FILE : uploads
-    USER {
-        bigint id PK
-        varchar(255) username
-        varchar(255) password
-        varchar(255) role
-    }
-    FILE {
-        bigint id PK
-        varchar(255) name
-        blob content
-        bigint user_id FK
-        timestamp created_at
-    }
-🛠️ Installation
-Prerequisites
-Java 17+
+graph TD
+    Main --> Authentication
+    Main --> FileModule
+    Main --> RBAC
+    Authentication --> UserDB
+    FileModule --> Encryption
+    FileModule --> MalwareScan
+    RBAC --> AdminFeatures
+    RBAC --> UserFeatures
+💻 Installation
+Requirements
+Java 17+ JDK
 
-Maven 3.8+
+Terminal/Command Prompt
 
-MySQL 8.0+
-
-Node.js 16+ (for frontend)
-
-Setup Instructions
+Setup
 bash
 Copy
 # Clone repository
 git clone https://github.com/DrishtiJain-TheDeveloper/Secure-File-Management-System.git
 cd Secure-File-Management-System
 
-# Backend setup
-cd backend
-mvn clean install
+# Compile all Java files
+javac -d bin src/*.java src/modules/*.java
 
-# Database configuration
-# Create MySQL database and update application.properties
-
-# Frontend setup
-cd ../frontend
-npm install
+# Run the application
+java -cp bin Main
 🖥️ Usage
-Running the Application
+Default Credentials
+Role	Username	Password
+Admin	admin	admin123
+User	user1	user123
+Command Line Interface
 bash
 Copy
-# Start backend
-cd backend
-mvn spring-boot:run
+1. Authentication & Access Control
+2. File Operations & Encryption  
+3. Role-Based Access Control
+4. Exit
+Sample Workflow
+Login with username/password + OTP
 
-# Start frontend
-cd ../frontend
-npm start
-Default Credentials
-Admin: admin@system.com / Admin@123
+Select file operation:
 
-User: user@example.com / User@123
+Create encrypted file
 
-📚 API Documentation
-Key Endpoints
-Endpoint	Method	Description
-/api/auth/login	POST	User authentication
-/api/files	GET	List user files
-/api/files/upload	POST	Upload new file
-/api/files/{id}	GET	Download file
-View Full API Docs
+Read/decrypt existing file
 
-💻 Technologies Used
-Backend
-Java 17
+Share with other users
 
-Spring Boot 3.1.5
+Admin users can:
 
-Spring Security
+List all users
 
-JPA/Hibernate
+Manage all files
 
-MySQL
+📦 Modules
+AuthenticationAccessControlModule
+Handles user registration/login
 
-Frontend
-React 18
+Manages active sessions
 
-Material-UI
+OTP generation/verification
 
-Axios
+User listing (admin only)
 
-Security
-JWT Authentication
+FileModule
+java
+Copy
+public class FileModule {
+    // File operations with security checks
+    public void createFile(Scanner, username) {...}
+    public void encrypt(content, shift) {...}
+    private boolean isMalware(content) {...}
+}
+RoleBasedAccessControlModule
+Different menus for admin/user
 
-AES-256 Encryption
+Permission enforcement
 
-Argon2 Password Hashing
+File ownership tracking
 
-📷 Screenshots
-Login Page
-Login Page
-
-File Dashboard
-Dashboard
-
-Admin Panel
-Admin Panel
-
+📂 Code Structure
+bash
+Copy
+src/
+├── Main.java                 # Entry point
+├── modules/
+│   ├── AuthenticationAccessControlModule.java
+│   ├── FileModule.java
+│   └── RoleBasedAccessControlModule.java
+bin/                          # Compiled classes
 🤝 Contributing
-Development Workflow
+Development Process
 Fork the repository
 
-Create your feature branch:
+Create feature branch:
 
 bash
 Copy
-git checkout -b feature/new-feature
-Commit your changes:
+git checkout -b feature/improved-encryption
+Commit changes:
 
 bash
 Copy
-git commit -m "Add new feature"
-Push to the branch:
-
-bash
-Copy
-git push origin feature/new-feature
-Open a pull request
+git commit -m "Add AES encryption support"
+Push and open PR
 
 Coding Standards
-Follow Google Java Style Guide
+Follow Java naming conventions
 
-Use meaningful variable names
+Document public methods
 
-Include Javadoc for public methods
+Include input validation
 
-Write unit tests for new features
+Maintain 4-space indentation
 
 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License - See LICENSE for details.
