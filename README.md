@@ -82,12 +82,13 @@ Role	Username	Password
 Admin	admin	admin123
 User	user1	user123
 Command Line Interface
-bash
-Copy
+```bash
+
 1. Authentication & Access Control
 2. File Operations & Encryption  
 3. Role-Based Access Control
 4. Exit
+```
 Sample Workflow
 Login with username/password + OTP
 
@@ -116,14 +117,15 @@ OTP generation/verification
 User listing (admin only)
 
 FileModule
-java
-Copy
+```java
+
 public class FileModule {
     // File operations with security checks
     public void createFile(Scanner, username) {...}
     public void encrypt(content, shift) {...}
     private boolean isMalware(content) {...}
 }
+```
 RoleBasedAccessControlModule
 Different menus for admin/user
 
@@ -132,8 +134,8 @@ Permission enforcement
 File ownership tracking
 
 📂 Code Structure
-bash
-Copy
+```bash
+
 src/
 ├── Main.java                 # Entry point
 ├── modules/
@@ -141,20 +143,23 @@ src/
 │   ├── FileModule.java
 │   └── RoleBasedAccessControlModule.java
 bin/                          # Compiled classes
+```
 🤝 Contributing
 Development Process
 Fork the repository
 
 Create feature branch:
 
-bash
-Copy
+```bash
+
 git checkout -b feature/improved-encryption
+```
 Commit changes:
 
-bash
-Copy
+```bash
+
 git commit -m "Add AES encryption support"
+```
 Push and open PR
 
 Coding Standards
