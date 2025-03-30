@@ -41,11 +41,12 @@ graph LR
     B --> C[Store]
     C --> D[Share]
     D --> E[Decrypt]
+```
 🏗️ System Architecture
 Core Components:
 
-mermaid
-Copy
+```mermaid
+
 graph TD
     Main --> Authentication
     Main --> FileModule
@@ -55,6 +56,7 @@ graph TD
     FileModule --> MalwareScan
     RBAC --> AdminFeatures
     RBAC --> UserFeatures
+```
 💻 Installation
 Requirements
 Java 17+ JDK
@@ -62,8 +64,8 @@ Java 17+ JDK
 Terminal/Command Prompt
 
 Setup
-bash
-Copy
+```bash
+
 # Clone repository
 git clone https://github.com/DrishtiJain-TheDeveloper/Secure-File-Management-System.git
 cd Secure-File-Management-System
@@ -73,6 +75,7 @@ javac -d bin src/*.java src/modules/*.java
 
 # Run the application
 java -cp bin Main
+```
 🖥️ Usage
 Default Credentials
 Role	Username	Password
