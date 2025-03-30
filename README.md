@@ -90,31 +90,31 @@ java -cp bin Main
 4. Exit
 ```
 # Sample Workflow
--Login with username/password + OTP
+- Login with username/password + OTP
 
--Select file operation:
+- Select file operation:
 
---Create encrypted file
+-- Create encrypted file
 
---Read/decrypt existing file
+-- Read/decrypt existing file
 
---Share with other users
+-- Share with other users
 
--Admin users can:
+- Admin users can:
 
---List all users
+-- List all users
 
---Manage all files
+-- Manage all files
 
 # 📦 Modules
 ## AuthenticationAccessControlModule
--Handles user registration/login
+- Handles user registration/login
 
--Manages active sessions
+- Manages active sessions
 
--OTP generation/verification
+- OTP generation/verification
 
--User listing (admin only)
+- User listing (admin only)
 
 ## FileModule
 ```java
@@ -129,7 +129,7 @@ public class FileModule {
 ## RoleBasedAccessControlModule
 - Different menus for admin/user
 
--Permission enforcement
+- Permission enforcement
 
 - File ownership tracking
 
