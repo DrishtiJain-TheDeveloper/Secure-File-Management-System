@@ -1,112 +1,191 @@
-# Secure-File-Management-System
-A Secure File Management System (SFMS) in Java that offers authentication, encryption, access control, and threat detection. Includes file operations (create, read, write, share), encryption/decryption, and security threat detection (buffer overflow & malware patterns). 
+# 🔒 Secure File Management System
 
-The Secure File Management System (SFMS) is a comprehensive Java-based application that ensures high levels of security for users managing sensitive files. The system integrates several key features like authentication, encryption, access control, and threat detection to protect data from unauthorized access, manipulation, and malicious attacks.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Java 17+](https://img.shields.io/badge/Java-17+-blue.svg)](https://www.oracle.com/java/)
+![Platform](https://img.shields.io/badge/Platform-Windows%20|%20macOS%20|%20Linux-lightgrey)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1.5-brightgreen.svg)](https://spring.io/projects/spring-boot)
 
-Key Features:
-Authentication: Ensures only authorized users can access the system.
+## 📖 Table of Contents
+- [Project Description](#-project-description)
+- [Key Features](#-key-features)
+- [System Architecture](#-system-architecture)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [API Documentation](#-api-documentation)
+- [Technologies Used](#-technologies-used)
+- [Screenshots](#-screenshots)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-Encryption: Safeguards files and their contents with encryption and decryption processes.
+## 📖 Project Description
+The **Secure File Management System** is a Java-based application that provides:
+- Secure file storage with AES-256 encryption
+- Role-based access control (RBAC)
+- File versioning and audit logging
+- RESTful API for integration
+- Built with Spring Boot and React
 
-Access Control: Manages user roles and their permissions for interacting with files.
+## 🌟 Key Features
 
-Threat Detection: Monitors potential threats like malware and buffer overflow patterns.
+### 🔐 Security Features
+| Feature | Implementation |
+|---------|---------------|
+| AES-256 Encryption | Java Cryptography Architecture (JCA) |
+| JWT Authentication | Spring Security |
+| Password Hashing | Argon2 algorithm |
+| Audit Logging | Spring AOP |
 
-1. Authentication & Access Control
-The Authentication & Access Control Module verifies the identity of the users and manages what actions they are allowed to perform. This module has three main components:
+### 📂 Core Functionality
+- File upload/download with encryption
+- File sharing with expiration
+- Version history tracking
+- Metadata search
 
-a. Username-Password Authentication:
-The system starts by verifying the user’s identity based on a username and password. The steps are as follows:
+## 🏗️ System Architecture
 
-User Login:
+### Backend Structure
+mermaid
+graph TD
+    A[Client] --> B[Spring Security]
+    B --> C[Controllers]
+    C --> D[Services]
+    D --> E[Repositories]
+    E --> F[MySQL Database]
+Database Schema
+mermaid
+Copy
+erDiagram
+    USER ||--o{ FILE : uploads
+    USER {
+        bigint id PK
+        varchar(255) username
+        varchar(255) password
+        varchar(255) role
+    }
+    FILE {
+        bigint id PK
+        varchar(255) name
+        blob content
+        bigint user_id FK
+        timestamp created_at
+    }
+🛠️ Installation
+Prerequisites
+Java 17+
 
-The user is prompted to enter a username and password.
+Maven 3.8+
 
-The system matches the entered credentials against a stored database (e.g., a hashed password in a secure storage location).
+MySQL 8.0+
 
-If the credentials are correct, the system proceeds with the authentication.
+Node.js 16+ (for frontend)
 
-If they are incorrect, access is denied, and the user is given an error message.
+Setup Instructions
+bash
+Copy
+# Clone repository
+git clone https://github.com/DrishtiJain-TheDeveloper/Secure-File-Management-System.git
+cd Secure-File-Management-System
 
-b. Two-Factor Authentication (2FA):
-To enhance security, the system incorporates Two-Factor Authentication (2FA). This is an additional step after the username-password verification. The system generates a random One-Time Password (OTP), which the user must input. The procedure works as follows:
+# Backend setup
+cd backend
+mvn clean install
 
-OTP Generation:
+# Database configuration
+# Create MySQL database and update application.properties
 
-After the user’s initial login with a correct username and password, the system generates a random OTP (a 6-digit number) and sends it to the user (via email or SMS).
+# Frontend setup
+cd ../frontend
+npm install
+🖥️ Usage
+Running the Application
+bash
+Copy
+# Start backend
+cd backend
+mvn spring-boot:run
 
-OTP Input:
+# Start frontend
+cd ../frontend
+npm start
+Default Credentials
+Admin: admin@system.com / Admin@123
 
-The user is prompted to enter the OTP.
+User: user@example.com / User@123
 
-The system checks if the entered OTP matches the generated one. If they match, access is granted.
+📚 API Documentation
+Key Endpoints
+Endpoint	Method	Description
+/api/auth/login	POST	User authentication
+/api/files	GET	List user files
+/api/files/upload	POST	Upload new file
+/api/files/{id}	GET	Download file
+View Full API Docs
 
-If the OTP is incorrect or expired, access is denied.
+💻 Technologies Used
+Backend
+Java 17
 
-This adds an additional layer of security, ensuring that even if the username/password combination is compromised, the system remains protected.
+Spring Boot 3.1.5
 
-c. Role-Based Access Control (RBAC):
-RBAC is implemented to control the level of access granted to each user based on their role. The system defines two roles:
+Spring Security
 
-Admin:
+JPA/Hibernate
 
-Full access to all system features, including file operations, encryption settings, user management, and threat monitoring.
+MySQL
 
-Admin can also modify security settings, user permissions, and system configurations.
+Frontend
+React 18
 
-User:
+Material-UI
 
-Limited access, only able to perform basic file operations such as creating, reading, and writing files.
+Axios
 
-Users cannot access sensitive data or alter system security settings.
+Security
+JWT Authentication
 
-2. File Operations
-The system supports a variety of file management operations, ensuring that files are stored securely while maintaining user accessibility. These operations include:
+AES-256 Encryption
 
-Create: Users can create new files, ensuring the file is stored securely within the system.
+Argon2 Password Hashing
 
-Read: Users can view the contents of files, but only if they have the appropriate permissions based on their role.
+📷 Screenshots
+Login Page
+Login Page
 
-Write: Users can modify the contents of files they have access to.
+File Dashboard
+Dashboard
 
-Share: Users can securely share files with others, but only if authorized (Admin or User with necessary permissions).
+Admin Panel
+Admin Panel
 
-3. Encryption/Decryption
-To safeguard sensitive file data, the system uses encryption algorithms to protect files. When a user uploads or creates a file, it is automatically encrypted before being stored. Decryption happens when the user needs to access or edit the file. Here’s how it works:
+🤝 Contributing
+Development Workflow
+Fork the repository
 
-Encryption:
+Create your feature branch:
 
-When a file is uploaded or created by the user, it is encrypted using a secure encryption algorithm (e.g., AES-256).
+bash
+Copy
+git checkout -b feature/new-feature
+Commit your changes:
 
-The encryption key is stored securely and is never exposed.
+bash
+Copy
+git commit -m "Add new feature"
+Push to the branch:
 
-Encrypted files are stored in a separate location from their original form.
+bash
+Copy
+git push origin feature/new-feature
+Open a pull request
 
-Decryption:
+Coding Standards
+Follow Google Java Style Guide
 
-When a user attempts to open or modify an encrypted file, the system uses the decryption key to decrypt the file.
+Use meaningful variable names
 
-Only authorized users (based on their role) can decrypt the files they have access to.
+Include Javadoc for public methods
 
-4. Threat Detection
-The SFMS incorporates a threat detection system that actively monitors potential security vulnerabilities and attacks. Some key features include:
+Write unit tests for new features
 
-a. Malware Detection:
-The system includes malware detection techniques to identify files that may contain harmful software (e.g., viruses, trojans, or ransomware). The detection system scans uploaded files for known signatures of malicious code and alerts the user or administrator if malware is detected.
-
-b. Buffer Overflow Protection:
-Buffer overflow vulnerabilities are a common security threat in many systems. The SFMS includes mechanisms to detect and prevent buffer overflow attacks that could allow attackers to manipulate the system or gain unauthorized access.
-
-The system uses input validation checks to ensure that users cannot overload buffers by providing excessively large inputs that could compromise security.
-
-Any suspicious behavior is logged, and users are notified of potential risks.
-
-5. File Sharing & Permissions
-The system provides secure file-sharing capabilities, allowing users to share files while maintaining full control over their data. Administrators can manage file access rights, setting specific permissions for users or groups:
-
-Read-Only Access: Users can view the file but cannot modify it.
-
-Read-Write Access: Users can both view and edit the file.
-
-Admin-Only Access: Files restricted to administrators only, ensuring that sensitive data is protected.
-
+📄 License
+This project is licensed under the MIT License - see the LICENSE file for details.
