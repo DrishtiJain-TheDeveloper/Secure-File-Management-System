@@ -42,7 +42,7 @@ graph LR
     C --> D[Share]
     D --> E[Decrypt]
 ```
-🏗️ System Architecture
+# 🏗️ System Architecture
 Core Components:
 
 ```mermaid
@@ -57,11 +57,11 @@ graph TD
     RBAC --> AdminFeatures
     RBAC --> UserFeatures
 ```
-#💻 Installation
-##Requirements
--Java 17+ JDK
+# 💻 Installation
+## Requirements
+- Java 17+ JDK
 
--Terminal/Command Prompt
+- Terminal/Command Prompt
 
 ## Setup
 ```bash
@@ -89,7 +89,7 @@ java -cp bin Main
 3. Role-Based Access Control
 4. Exit
 ```
-#Sample Workflow
+# Sample Workflow
 -Login with username/password + OTP
 
 -Select file operation:
