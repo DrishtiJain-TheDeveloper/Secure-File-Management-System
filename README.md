@@ -57,13 +57,13 @@ graph TD
     RBAC --> AdminFeatures
     RBAC --> UserFeatures
 ```
-💻 Installation
-Requirements
-Java 17+ JDK
+#💻 Installation
+##Requirements
+-Java 17+ JDK
 
-Terminal/Command Prompt
+-Terminal/Command Prompt
 
-Setup
+## Setup
 ```bash
 
 # Clone repository
@@ -76,12 +76,12 @@ javac -d bin src/*.java src/modules/*.java
 # Run the application
 java -cp bin Main
 ```
-🖥️ Usage
-Default Credentials
-Role	Username	Password
-Admin	admin	admin123
-User	user1	user123
-Command Line Interface
+# 🖥️ Usage
+##  Default Credentials
+    Role	Username	Password
+    Admin	admin	admin123
+    User	user1	user123
+## Command Line Interface
 ```bash
 
 1. Authentication & Access Control
@@ -89,34 +89,34 @@ Command Line Interface
 3. Role-Based Access Control
 4. Exit
 ```
-Sample Workflow
-Login with username/password + OTP
+#Sample Workflow
+-Login with username/password + OTP
 
-Select file operation:
+-Select file operation:
 
-Create encrypted file
+--Create encrypted file
 
-Read/decrypt existing file
+--Read/decrypt existing file
 
-Share with other users
+--Share with other users
 
-Admin users can:
+-Admin users can:
 
-List all users
+--List all users
 
-Manage all files
+--Manage all files
 
-📦 Modules
-AuthenticationAccessControlModule
-Handles user registration/login
+# 📦 Modules
+## AuthenticationAccessControlModule
+-Handles user registration/login
 
-Manages active sessions
+-Manages active sessions
 
-OTP generation/verification
+-OTP generation/verification
 
-User listing (admin only)
+-User listing (admin only)
 
-FileModule
+## FileModule
 ```java
 
 public class FileModule {
@@ -126,14 +126,14 @@ public class FileModule {
     private boolean isMalware(content) {...}
 }
 ```
-RoleBasedAccessControlModule
-Different menus for admin/user
+## RoleBasedAccessControlModule
+- Different menus for admin/user
 
-Permission enforcement
+-Permission enforcement
 
-File ownership tracking
+- File ownership tracking
 
-📂 Code Structure
+# 📂 Code Structure
 ```bash
 
 src/
@@ -144,32 +144,32 @@ src/
 │   └── RoleBasedAccessControlModule.java
 bin/                          # Compiled classes
 ```
-🤝 Contributing
-Development Process
-Fork the repository
+# 🤝 Contributing
+## Development Process
+- Fork the repository
 
-Create feature branch:
+- Create feature branch:
 
 ```bash
 
 git checkout -b feature/improved-encryption
 ```
-Commit changes:
+- Commit changes:
 
 ```bash
 
-git commit -m "Add AES encryption support"
+git commit -m "Improve Caesar Cipher implementation"
 ```
-Push and open PR
+- Push and open PR
 
-Coding Standards
-Follow Java naming conventions
+## Coding Standards
+- Follow Java naming conventions
 
-Document public methods
+- Document public methods
 
-Include input validation
+- Include input validation
 
 Maintain 4-space indentation
 
-📄 License
+# 📄 License
 MIT License - See LICENSE for details.
