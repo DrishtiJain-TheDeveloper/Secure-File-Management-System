@@ -7,7 +7,10 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Secure File Management System");
+<<<<<<< HEAD
         System.out.println("Default admin account: secureadmin");
+=======
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
 
         boolean exit = false;
 
@@ -49,4 +52,8 @@ public class Main {
         }
         scanner.close();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4

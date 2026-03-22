@@ -1,4 +1,8 @@
 package modules;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
 import java.util.*;
 import java.security.SecureRandom;
 import java.io.File;
@@ -6,6 +10,7 @@ import java.io.File;
 public class AuthenticationAccessControlModule {
     private static Map<String, User> users = new HashMap<>();
     private static Set<String> activeUsers = new HashSet<>();
+<<<<<<< HEAD
     private static Map<String, Integer> loginAttempts = new HashMap<>();
     private static final int MAX_LOGIN_ATTEMPTS = 3;
 
@@ -21,11 +26,15 @@ public class AuthenticationAccessControlModule {
         "Who was your first best friend?",
         "What is your dream job?"
     };
+=======
+    private static SecureRandom random = new SecureRandom();
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
 
     private static class User {
         String username;
         String password;
         String role;
+<<<<<<< HEAD
         String securityQuestion;
         String securityAnswer;
         List<String> createdFiles = new ArrayList<>();
@@ -36,18 +45,35 @@ public class AuthenticationAccessControlModule {
             this.role = role;
             this.securityQuestion = securityQuestion;
             this.securityAnswer = securityAnswer;
+=======
+        List<String> createdFiles = new ArrayList<>();
+
+        User(String username, String password, String role) {
+            this.username = username;
+            this.password = password;
+            this.role = role;
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
         }
     }
 
     static {
+<<<<<<< HEAD
         users.put("secureadmin", new User("secureadmin", "password123", "admin", "What is your favorite color?", "blue"));
+=======
+        users.put("admin", new User("admin", "admin123", "admin"));
+        users.put("user1", new User("user1", "user123", "user"));
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
     }
 
     public static void run(Scanner scanner) {
         boolean exit = false;
 
         while (!exit) {
+<<<<<<< HEAD
             System.out.println("\nAuthentication & Access Control Menu:");
+=======
+            System.out.println("\Authentication & Access Control Menu:");
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
             System.out.println("1. Register New User");
             System.out.println("2. Login");
             System.out.println("3. List All Users (Admin only)");
@@ -79,12 +105,18 @@ public class AuthenticationAccessControlModule {
             }
         }
     }
+<<<<<<< HEAD
     public static boolean isUserRegistered(String username) {
         return users.containsKey(username);
     }
     
     private static void registerNewUser(Scanner scanner) {
         System.out.println("\nRegister New User");
+=======
+
+    private static void registerNewUser(Scanner scanner) {
+        System.out.println("Register New User");
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
 
@@ -96,6 +128,7 @@ public class AuthenticationAccessControlModule {
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
+<<<<<<< HEAD
         System.out.println("\nChoose a security question:");
         for (int i = 0; i < SECURITY_QUESTIONS.length; i++) {
             System.out.println((i + 1) + ". " + SECURITY_QUESTIONS[i]);
@@ -130,11 +163,31 @@ public class AuthenticationAccessControlModule {
             return;
         }
 
+=======
+        System.out.print("Assign role (admin/user): ");
+        String role = scanner.nextLine().toLowerCase();
+
+        if (!role.equals("admin") && !role.equals("user")) {
+            System.out.println("Invalid role. Defaulting to 'user'.");
+            role = "user";
+        }
+
+        users.put(username, new User(username, password, role));
+        System.out.println("User registered successfully!");
+    }
+
+    private static void login(Scanner scanner) {
+        System.out.println("Login");
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
         User user = users.get(username);
         if (user != null && user.password.equals(password)) {
+<<<<<<< HEAD
             System.out.println("Authentication successful!");
             System.out.println("Security Question: " + user.securityQuestion);
             System.out.print("Enter your answer: ");
@@ -166,10 +219,29 @@ public class AuthenticationAccessControlModule {
         } else {
             System.out.println("Warning: " + (MAX_LOGIN_ATTEMPTS - attempts) +
                              " attempts remaining before account lock.");
+=======
+            int otp = 100000 + random.nextInt(900000);
+            System.out.println("Authentication successful!");
+            System.out.println("Your OTP: " + otp);
+            System.out.print("Enter OTP: ");
+            String enteredOtp = scanner.nextLine();
+
+            if (enteredOtp.equals(String.valueOf(otp))) {
+                System.out.println("2FA Verified! Access granted.");
+                activeUsers.add(username);
+                System.out.println("Logged in as " + user.role + ": " + 
+                    (user.role.equals("admin") ? "Full access granted." : "Limited access granted."));
+            } else {
+                System.out.println("Invalid OTP. Login failed.");
+            }
+        } else {
+            System.out.println("Invalid username or password.");
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
         }
     }
 
     public static void listAllUsers(Scanner scanner) {
+<<<<<<< HEAD
         System.out.print("\nEnter your username: ");
         String username = scanner.nextLine();
 
@@ -178,6 +250,11 @@ public class AuthenticationAccessControlModule {
             return;
         }
 
+=======
+        System.out.print("Enter admin username to verify: ");
+        String username = scanner.nextLine();
+        
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
         User user = users.get(username);
         if (user == null || !user.role.equals("admin")) {
             System.out.println("Access denied. Admin privileges required.");
@@ -187,7 +264,11 @@ public class AuthenticationAccessControlModule {
         System.out.println("\nList of Registered Users:");
         System.out.printf("%-15s %-10s %-15s%n", "Username", "Role", "Files Created");
         System.out.println("----------------------------------");
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
         for (User u : users.values()) {
             System.out.printf("%-15s %-10s %-15d%n", 
                 u.username, u.role, u.createdFiles.size());
@@ -195,9 +276,15 @@ public class AuthenticationAccessControlModule {
     }
 
     public static void listMyFiles(Scanner scanner) {
+<<<<<<< HEAD
         System.out.print("\nEnter your username: ");
         String username = scanner.nextLine();
 
+=======
+        System.out.print("Enter your username: ");
+        String username = scanner.nextLine();
+        
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
         if (!activeUsers.contains(username)) {
             System.out.println("Please login first.");
             return;
@@ -255,6 +342,7 @@ public class AuthenticationAccessControlModule {
         User user = users.get(username);
         return user != null ? user.role : null;
     }
+<<<<<<< HEAD
     public static boolean removeUser(String username) {
         return users.remove(username) != null;
     }
@@ -283,4 +371,6 @@ public class AuthenticationAccessControlModule {
         }
     }
     
+=======
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
 }

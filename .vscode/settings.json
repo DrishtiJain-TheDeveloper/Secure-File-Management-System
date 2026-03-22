@@ -1,2 +1,15 @@
 {
+<<<<<<< HEAD
 }
+=======
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.vscode": false
+    }
+}
+>>>>>>> 790cb1d4545b00b6a6c6d4f068c445d3c4e80bb4
