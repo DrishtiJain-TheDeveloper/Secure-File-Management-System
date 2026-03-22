@@ -1,7 +1,6 @@
 services:
   - type: web
     name: secure-file-management
-    env: java
-    buildCommand: chmod +x mvnw && ./mvnw clean package -DskipTests
-    startCommand: java -jar target/secure-file-management-1.0.0.jar
+    env: docker
     plan: free
+    dockerfilePath: ./Dockerfile
