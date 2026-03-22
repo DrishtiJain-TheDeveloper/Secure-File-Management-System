@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SecureFS</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- PARTICLES BG -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- AUTH SECTION -->
+<div id="auth-section" class="container">
+    <div class="auth-card">
+        <div class="logo">
+            <div class="logo-icon">🔐</div>
+            <h1>SecureFS</h1>
+            <p>Secure File Management System</p>
+        </div>
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('login')">Login</button>
+            <button class="tab" onclick="switchTab('register')">Register</button>
+        </div>
+
+        <!-- LOGIN -->
+        <div id="login-form">
+            <div id="login-step-1">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="login-username" placeholder="Enter username" onkeydown="if(event.key==='Enter') fetchSecurityQuestion()"/>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-icon-wrap">
+                        <input type="password" id="login-password" placeholder="Enter password" onkeydown="if(event.key==='Enter') fetchSecurityQuestion()"/>
+                        <button class="eye-btn" onclick="togglePwd('login-password',this)" tabindex="-1">👁</button>
+                    </div>
+                </div>
+                <button class="btn btn-primary full" id="btn-next" onclick="fetchSecurityQuestion()">Next →</button>
+            </div>
+            <div id="login-step-2" style="display:none;">
+                <div class="step-pill">Step 2 of 2 — Security Verification</div>
+                <div class="form-group">
+                    <label id="security-question-label"></label>
+                    <input type="text" id="login-security-answer" placeholder="Your answer" onkeydown="if(event.key==='Enter') login()"/>
+                </div>
+                <div class="btn-row">
+                    <button class="btn btn-outline" onclick="backToStep1()">← Back</button>
+                    <button class="btn btn-primary" id="btn-login" onclick="login()">Login</button>
+                </div>
+            </div>
+            <div id="login-msg" class="msg"></div>
+        </div>
+
+        <!-- REGISTER -->
+        <div id="register-form" style="display:none;">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="reg-username" placeholder="Choose a username"/>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <div class="input-icon-wrap">
+                    <input type="password" id="reg-password" placeholder="Choose a password" oninput="checkPasswordStrength(this.value)"/>
+                    <button class="eye-btn" onclick="togglePwd('reg-password',this)" tabindex="-1">👁</button>
+                </div>
+                <div class="strength-bar"><div id="strength-fill"></div></div>
+                <span id="strength-label" class="field-hint"></span>
+            </div>
+            <div class="form-group">
+                <label>Security Question</label>
+                <select id="reg-question"></select>
+            </div>
+            <div class="form-group">
+                <label>Answer</label>
+                <input type="text" id="reg-answer" placeholder="Your answer" onkeydown="if(event.key==='Enter') register()"/>
+            </div>
+            <button class="btn btn-primary full" id="btn-register" onclick="register()">Create Account</button>
+            <div id="register-msg" class="msg"></div>
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard-section" style="display:none;">
+    <nav class="navbar">
+        <div class="nav-brand">🔐 SecureFS</div>
+        <div class="nav-center" id="nav-search-wrap" style="display:none;">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="file-search" placeholder="Search files..." oninput="filterFiles(this.value)"/>
+            </div>
+        </div>
+        <div class="nav-user">
+            <div class="user-chip">
+                <span class="user-avatar" id="nav-avatar"></span>
+                <span id="nav-username"></span>
+                <span id="nav-role" class="role-badge"></span>
+            </div>
+            <button class="btn btn-sm btn-outline" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-section-label">NAVIGATION</div>
+            <ul id="sidebar-menu"></ul>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">RECENT</div>
+            <ul id="activity-list" class="activity-list"></ul>
+        </aside>
+
+        <main class="main-content">
+
+            <!-- FILE PANEL -->
+            <div id="panel-files" class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>File Operations</h2>
+                        <p class="panel-sub">Manage your encrypted files</p>
+                    </div>
+                    <div class="header-stats" id="file-stats"></div>
+                </div>
+
+                <!-- STATS ROW -->
+                <div class="stats-row" id="stats-row"></div>
+
+                <div class="action-grid">
+                    <div class="action-card" onclick="openModal('modal-create')">
+                        <div class="action-icon">📄</div>
+                        <div class="action-label">Create File</div>
+                        <div class="action-desc">New empty file</div>
+                    </div>
+                    <div class="action-card" onclick="openModal('modal-write')">
+                        <div class="action-icon">✏️</div>
+                        <div class="action-label">Write & Encrypt</div>
+                        <div class="action-desc">Caesar cipher</div>
+                    </div>
+                    <div class="action-card" onclick="openModal('modal-read')">
+                        <div class="action-icon">📖</div>
+                        <div class="action-label">Read & Decrypt</div>
+                        <div class="action-desc">View contents</div>
+                    </div>
+                    <div class="action-card" onclick="openModal('modal-metadata')">
+                        <div class="action-icon">ℹ️</div>
+                        <div class="action-label">File Info</div>
+                        <div class="action-desc">Size, date, path</div>
+                    </div>
+                    <div class="action-card" onclick="openModal('modal-share')">
+                        <div class="action-icon">🔗</div>
+                        <div class="action-label">Share File</div>
+                        <div class="action-desc">Send to user</div>
+                    </div>
+                    <div class="action-card danger-card" onclick="openModal('modal-delete-file')">
+                        <div class="action-icon">🗑️</div>
+                        <div class="action-label">Delete File</div>
+                        <div class="action-desc">Permanent remove</div>
+                    </div>
+                </div>
+
+                <div class="files-section">
+                    <div class="files-header">
+                        <h3>My Files <span id="file-count-badge" class="count-badge"></span></h3>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <div class="view-toggle">
+                                <button class="view-btn active" id="view-grid" onclick="setView('grid')" title="Grid view">⊞</button>
+                                <button class="view-btn" id="view-list" onclick="setView('list')" title="List view">☰</button>
+                            </div>
+                            <button class="btn btn-sm btn-outline" onclick="loadMyFiles()">↻ Refresh</button>
+                        </div>
+                    </div>
+                    <div id="my-files-list" class="files-grid"></div>
+                </div>
+            </div>
+
+            <!-- SHARE CENTER PANEL -->
+            <div id="panel-share" class="panel" style="display:none;">
+                <div class="panel-header">
+                    <div>
+                        <h2>Share Center</h2>
+                        <p class="panel-sub">Send files and track sharing activity</p>
+                    </div>
+                </div>
+
+                <!-- SHARE STATS -->
+                <div class="stats-row" id="share-stats-row"></div>
+
+                <!-- SHARE TABS -->
+                <div class="share-tabs">
+                    <button class="share-tab active" id="stab-send" onclick="switchShareTab('send')">
+                        📤 Send File
+                    </button>
+                    <button class="share-tab" id="stab-inbox" onclick="switchShareTab('inbox')">
+                        📥 Inbox <span id="inbox-badge" class="inbox-badge" style="display:none;"></span>
+                    </button>
+                    <button class="share-tab" id="stab-sent" onclick="switchShareTab('sent')">
+                        📨 Sent
+                    </button>
+                    <button class="share-tab" id="stab-history" onclick="switchShareTab('history')">
+                        🕓 History
+                    </button>
+                </div>
+
+                <!-- SEND TAB -->
+                <div id="share-pane-send" class="share-pane">
+                    <div class="share-send-layout">
+                        <div class="share-form-card">
+                            <h3>Send a File</h3>
+                            <p class="panel-sub" style="margin-bottom:20px;">Choose a file from your library and pick a recipient</p>
+
+                            <div class="form-group">
+                                <label>Select File</label>
+                                <div id="send-file-picker" class="file-picker-grid"></div>
+                                <input type="hidden" id="send-selected-file"/>
+                                <div id="send-selected-display" class="selected-file-display" style="display:none;"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Recipient</label>
+                                <div class="recipient-search-wrap">
+                                    <input type="text" id="send-recipient-input" placeholder="Search users..." oninput="filterRecipients(this.value)" autocomplete="off"/>
+                                    <div id="recipient-dropdown" class="recipient-dropdown" style="display:none;"></div>
+                                </div>
+                                <div id="send-recipient-display" class="recipient-chip-wrap" style="display:none;"></div>
+                                <input type="hidden" id="send-selected-recipient"/>
+                            </div>
+
+                            <div id="share-preview-box" class="share-preview-box" style="display:none;">
+                                <div class="share-preview-arrow">
+                                    <div class="share-preview-from">
+                                        <div class="sp-avatar" id="sp-from-avatar"></div>
+                                        <div class="sp-name" id="sp-from-name"></div>
+                                        <div class="sp-label">From</div>
+                                    </div>
+                                    <div class="share-preview-file">
+                                        <div class="sp-file-icon" id="sp-file-icon"></div>
+                                        <div class="sp-file-name" id="sp-file-name"></div>
+                                        <div class="sp-arrow">→</div>
+                                    </div>
+                                    <div class="share-preview-to">
+                                        <div class="sp-avatar" id="sp-to-avatar"></div>
+                                        <div class="sp-name" id="sp-to-name"></div>
+                                        <div class="sp-label">To</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary full" id="btn-do-share" onclick="doShare()" disabled>
+                                🔗 Send File
+                            </button>
+                            <div id="share-center-msg" class="msg" style="margin-top:12px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INBOX TAB -->
+                <div id="share-pane-inbox" class="share-pane" style="display:none;">
+                    <div class="share-records-header">
+                        <span>Files shared with you</span>
+                        <button class="btn btn-sm btn-outline" onclick="loadInbox()">↻ Refresh</button>
+                    </div>
+                    <div id="inbox-list" class="share-records-list"></div>
+                </div>
+
+                <!-- SENT TAB -->
+                <div id="share-pane-sent" class="share-pane" style="display:none;">
+                    <div class="share-records-header">
+                        <span>Files you have sent</span>
+                        <button class="btn btn-sm btn-outline" onclick="loadSent()">↻ Refresh</button>
+                    </div>
+                    <div id="sent-list" class="share-records-list"></div>
+                </div>
+
+                <!-- HISTORY TAB -->
+                <div id="share-pane-history" class="share-pane" style="display:none;">
+                    <div class="share-records-header">
+                        <span>All sharing activity</span>
+                        <button class="btn btn-sm btn-outline" onclick="loadHistory()">↻ Refresh</button>
+                    </div>
+                    <div id="history-list" class="share-records-list"></div>
+                </div>
+            </div>
+
+            <!-- ADMIN PANEL -->
+            <div id="panel-admin" class="panel" style="display:none;">
+                <div class="panel-header">
+                    <div>
+                        <h2>Admin Panel</h2>
+                        <p class="panel-sub">Manage users and system access</p>
+                    </div>
+                </div>
+                <div class="stats-row" id="admin-stats-row"></div>
+                <div class="section-block">
+                    <div class="files-header">
+                        <h3>Registered Users <span id="user-count-badge" class="count-badge"></span></h3>
+                        <button class="btn btn-sm btn-outline" onclick="loadUsers()">↻ Refresh</button>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="data-table">
+                            <thead><tr><th>User</th><th>Role</th><th>Files</th><th>Status</th><th>Action</th></tr></thead>
+                            <tbody id="users-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<!-- TOAST STACK -->
+<div id="toast-stack" class="toast-stack"></div>
+
+<!-- MODAL: CREATE -->
+<div id="modal-create" class="modal-overlay" onclick="overlayClose(event,'modal-create')">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>📄 Create New File</h3>
+            <button class="modal-close" onclick="closeModal('modal-create')">✕</button>
+        </div>
+        <div class="form-group">
+            <label>File Name</label>
+            <input type="text" id="create-filename" placeholder="e.g. notes.txt" onkeydown="if(event.key==='Enter') createFile()"/>
+            <span class="field-hint">Supported: .txt .csv .json and more</span>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('modal-create')">Cancel</button>
+            <button class="btn btn-primary" id="btn-create" onclick="createFile()">Create File</button>
+        </div>
+        <div id="create-msg" class="msg"></div>
+    </div>
+</div>
+
+<!-- MODAL: WRITE -->
+<div id="modal-write" class="modal-overlay" onclick="overlayClose(event,'modal-write')">
+    <div class="modal modal-lg">
+        <div class="modal-header">
+            <h3>✏️ Write to File</h3>
+            <button class="modal-close" onclick="closeModal('modal-write')">✕</button>
+        </div>
+        <div class="form-group">
+            <label>File Name</label>
+            <input type="text" id="write-filename" placeholder="e.g. notes.txt"/>
+        </div>
+        <div class="form-group">
+            <label>Content</label>
+            <textarea id="write-content" rows="6" placeholder="Type your content here..."></textarea>
+            <div class="textarea-footer">
+                <span class="field-hint" id="write-char-count">0 characters</span>
+                <span class="field-hint" id="write-word-count">0 words</span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Encryption Shift <span class="badge-info">Caesar cipher</span></label>
+                <div class="shift-control">
+                    <button class="shift-btn" onclick="adjustShift('write-shift',-1)">−</button>
+                    <input type="number" id="write-shift" min="1" max="25" value="3"/>
+                    <button class="shift-btn" onclick="adjustShift('write-shift',1)">+</button>
+                </div>
+                <span class="field-hint" id="shift-preview"></span>
+            </div>
+            <div class="form-group">
+                <label>Write Mode</label>
+                <div class="toggle-group">
+                    <button class="toggle-btn active" id="mode-overwrite" onclick="setWriteMode(false)">Overwrite</button>
+                    <button class="toggle-btn" id="mode-append" onclick="setWriteMode(true)">Append</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('modal-write')">Cancel</button>
+            <button class="btn btn-primary" id="btn-write" onclick="writeFile()">Encrypt & Write</button>
+        </div>
+        <div id="write-msg" class="msg"></div>
+    </div>
+</div>
+
+<!-- MODAL: READ -->
+<div id="modal-read" class="modal-overlay" onclick="overlayClose(event,'modal-read')">
+    <div class="modal modal-lg">
+        <div class="modal-header">
+            <h3>📖 Read File</h3>
+            <button class="modal-close" onclick="closeModal('modal-read')">✕</button>
+        </div>
+        <div class="form-group">
+            <label>File Name</label>
+            <input type="text" id="read-filename" placeholder="e.g. notes.txt"/>
+        </div>
+        <div class="form-group">
+            <label>Decryption Shift <span class="badge-info">must match encryption shift</span></label>
+            <div class="shift-control">
+                <button class="shift-btn" onclick="adjustShift('read-shift',-1)">−</button>
+                <input type="number" id="read-shift" min="1" max="25" value="3"/>
+                <button class="shift-btn" onclick="adjustShift('read-shift',1)">+</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('modal-read')">Cancel</button>
+            <button class="btn btn-primary" id="btn-read" onclick="readFile()">Decrypt & Read</button>
+        </div>
+        <div id="read-msg" class="msg"></div>
+        <div id="read-result" style="display:none;">
+            <div class="result-header">
+                <span>Decrypted Content</span>
+                <div style="display:flex;gap:6px;">
+                    <button class="btn btn-sm btn-outline" onclick="copyContent()">📋 Copy</button>
+                    <button class="btn btn-sm btn-outline" onclick="downloadContent()">⬇ Download</button>
+                </div>
+            </div>
+            <pre id="read-content" class="file-content"></pre>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: METADATA -->
+<div id="modal-metadata" class="modal-overlay" onclick="overlayClose(event,'modal-metadata')">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>ℹ️ File Info</h3>
+            <button class="modal-close" onclick="closeModal('modal-metadata')">✕</button>
+        </div>
+        <div class="form-group">
+            <label>File Name</label>
+            <input type="text" id="meta-filename" placeholder="e.g. notes.txt" onkeydown="if(event.key==='Enter') getMetadata()"/>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('modal-metadata')">Cancel</button>
+            <button class="btn btn-primary" id="btn-meta" onclick="getMetadata()">Get Info</button>
+        </div>
+        <div id="meta-msg" class="msg"></div>
+        <div id="meta-result" class="meta-cards" style="display:none;"></div>
+    </div>
+</div>
+
+<!-- MODAL: SHARE (quick share from file card) -->
+<div id="modal-share" class="modal-overlay" onclick="overlayClose(event,'modal-share')">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>🔗 Quick Share</h3>
+            <button class="modal-close" onclick="closeModal('modal-share')">✕</button>
+        </div>
+        <div class="share-modal-file-preview" id="modal-share-file-preview"></div>
+        <div class="form-group">
+            <label>Recipient Username</label>
+            <div class="recipient-search-wrap">
+                <input type="text" id="modal-share-recipient" placeholder="Search users..." oninput="filterModalRecipients(this.value)" autocomplete="off"/>
+                <div id="modal-recipient-dropdown" class="recipient-dropdown" style="display:none;"></div>
+            </div>
+            <div id="modal-recipient-chip" class="recipient-chip-wrap" style="display:none;"></div>
+            <input type="hidden" id="modal-selected-recipient"/>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('modal-share')">Cancel</button>
+            <button class="btn btn-primary" id="btn-share" onclick="shareFile()">Send File</button>
+        </div>
+        <div id="share-msg" class="msg"></div>
+    </div>
+</div>
+
+<!-- MODAL: DELETE -->
+<div id="modal-delete-file" class="modal-overlay" onclick="overlayClose(event,'modal-delete-file')">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>🗑️ Delete File</h3>
+            <button class="modal-close" onclick="closeModal('modal-delete-file')">✕</button>
+        </div>
+        <div class="danger-banner">⚠️ This action is permanent and cannot be undone.</div>
+        <div class="form-group">
+            <label>File Name</label>
+            <input type="text" id="delete-filename" placeholder="e.g. notes.txt" onkeydown="if(event.key==='Enter') deleteFile()"/>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal('modal-delete-file')">Cancel</button>
+            <button class="btn btn-danger" id="btn-delete-file" onclick="deleteFile()">Delete</button>
+        </div>
+        <div id="delete-file-msg" class="msg"></div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

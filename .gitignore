@@ -1,0 +1,8 @@
+target/
+*.class
+*.jar
+!lib/javax.mail.jar
+out/
+shared_files/
+.idea/
+*.iml
